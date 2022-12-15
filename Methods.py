@@ -3,15 +3,13 @@ sys.path.append('C:\\Users\\gubis\\projects\\MAP_codes')
 from Interpol.Methods import Spline2, Lagrange
 
 import numpy as np
-from time import time
-import matplotlib.pyplot as plt
-
 
 #=====================================================================
 #=====================================================================
 
 
 def Simps(x_data: np.ndarray, y_data: np.ndarray, interval: list=None, step: float=0.01, interpol: bool=False) -> float:
+
     if interval==None:
         b = x_data[-1]
         a = x_data[0]
@@ -25,6 +23,7 @@ def Simps(x_data: np.ndarray, y_data: np.ndarray, interval: list=None, step: flo
             x,y = Spline2(x_data,y_data,step=step)
     else:
         x,y = x_data,y_data
+        step = x[1]-x[0]
 
     s = y[0] + y[-1]
     for i in range(1,len(y)-1):
@@ -54,9 +53,10 @@ def Trapz(x_data: np.ndarray, y_data: np.ndarray, interval: list=None, step: flo
             y = f.at(x)
         else:
             x,y = Spline2(x_data,y_data,step=step)
-    else:
+    else: 
         x,y = x_data,y_data
-    
+        step = x[1:]-x[:-1]
+
     y_mean = (y[1:]+y[:-1])/2
 
     I = sum(y_mean*step)
